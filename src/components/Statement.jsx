@@ -10,16 +10,15 @@ export default function Statement() {
           <div className="lg:pl-12 lg:pt-4">
             <div className="lg:max-w-lg">
               <h2 className="md:text-xl text-lg font-bold leading-7 mt-6 text-black text-center">
-                Market Insights
+                Course Insights
               </h2>
               <p className="mt-2 p-3 text-4xl sm:text-4xl md:text-6xl font-bold flex justify-center items-left tracking-tight bg-gradient-to-r from-blue-500 to-purple-800 bg-clip-text text-transparent ">
                 CurateSage
               </p>
               <p className="mt-5 text-md sm:text-md md:text-2xl text-black text-center font-light">
-                Are you looking to elevate your investment game and make more
-                informed decisions in the stock market? Welcome to StockWatch,
-                your all-in-one stock recommendation system designed to
-                revolutionize your investment experience.
+                Our AI-driven platform curates personalized courses,
+                prioritizing security, clarity, and accessibility for students
+                to navigate their academic journey confidently.
               </p>
               <div className="flex items-center justify-center ">
                 {!token && (
@@ -27,7 +26,7 @@ export default function Statement() {
                     href="/signup"
                     className="mt-5 rounded-md border border-transparent bg-indigo-600 py-3 px-6 font-medium text-white hover:bg-blue-700"
                   >
-                    Get Started <span aria-hidden="true">&rarr;</span>
+                    Get Recommendations <span aria-hidden="true">&rarr;</span>
                   </a>
                 )}
                 {token && (

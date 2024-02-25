@@ -81,6 +81,7 @@ export default function CourseRec({ key, code }) {
   return (
     <div className="flex justify-center ">
       {/* {loading ? <div className=""></div> : <div>loadingggg!!</div>} */}
+      {loading && <div className="text-black text-">loading</div>}
       <li className="flex items-center justify-between p-5 m-2 rounded-lg bg-indigo-700 mb-1 w-full h-96 max-h-96 overflow-y-auto no-scrollbar">
         <div className="flex flex-col w-full mt-10 no-scrollbar">
           <div className="flex flex-row justify-between  w-full">

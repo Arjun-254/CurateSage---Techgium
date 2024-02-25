@@ -84,7 +84,7 @@ export default function Dashboard() {
 
           {/* <div className="flex flex-col xl:flex-row gap-y-6 xl:gap-y-0 w-full xl:w-1/2 items-center justify-center ml-0  "> */}
           <div className="my-2 overflow-y-auto overflow-x-hidden rounded-2xl w-full items-center justify-center">
-            <p className="text-4xl md:text-4xl font-bold text-indigo-800 no-scrollbar flex items-center text-center justify-center">
+            <p className="mt-4 text-4xl md:text-4xl font-bold text-indigo-800 no-scrollbar flex items-center text-center justify-center">
               Your Recommendations
             </p>
             <Recommendations />

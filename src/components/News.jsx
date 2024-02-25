@@ -64,7 +64,7 @@ export default function News() {
 
   return (
     <div className="pb-2">
-      <p className="text-2xl md:text-3xl font-extrabold flex justify-center items-left tracking-tight text-indigo-800 bg-clip-text text-transparent p-2">
+      <p className="text-2xl md:text-3xl font-extrabold flex justify-center items-left tracking-tight text-indigo-800 bg-clip-text p-2">
         News
       </p>
       <Swiper

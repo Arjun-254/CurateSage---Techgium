@@ -99,8 +99,8 @@ export default function Course({ key, code }) {
           {" "}
           {loading ? (
             <div className="animate-pulse">
-              <div className="bg-gray-400 h-4 w-64 mb-2 rounded-md"></div>
-              <div className="bg-gray-500 h-4 w-48 rounded-md"></div>
+              <div className="bg-gray-200 h-4 w-64 mb-2 rounded-md"></div>
+              <div className="bg-gray-300 h-4 w-48 rounded-md"></div>
             </div>
           ) : (
             <div className="flex flex-col items-start">

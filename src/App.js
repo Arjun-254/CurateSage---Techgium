@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Preferences from "./pages/Preferences";
 import { jwtDecode } from "jwt-decode";
 import Dashboard from "./pages/Dashboard";
+import { Assistant } from "./pages/Assistant";
 // import { Recommend } from "./pages/Recommend";
 
 const PrivateWrapper = ({ element }) => {
@@ -33,11 +34,10 @@ function App() {
             path="/dashboard"
             element={<PrivateWrapper element={<Dashboard />} />}
           />
-          {/*
           <Route
-            path="/Recommend"
-            element={<PrivateWrapper element={<Recommend />} />}
-  />*/}
+            path="/Chatbot"
+            element={<PrivateWrapper element={<Assistant />} />}
+          />
         </Routes>
       </BrowserRouter>
     </div>
