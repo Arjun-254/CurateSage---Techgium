@@ -73,3 +73,7 @@ class RecommendationRequest(BaseModel):
 
 class statsRequest(BaseModel):
     code: str
+
+
+class geminiRequest(BaseModel):
+    input: str

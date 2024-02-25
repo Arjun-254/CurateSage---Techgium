@@ -16,7 +16,7 @@ from deepface import DeepFace
 
 from pymongo import MongoClient
 
-from schemas import User, Login, Token, UserInDB, TokenData, StudentData, RecommendationRequest, statsRequest
+from schemas import User, Login, Token, UserInDB, TokenData, StudentData, RecommendationRequest, statsRequest, geminiRequest
 
 import torch
 from torch_geometric.nn import SAGEConv, to_hetero
@@ -26,6 +26,8 @@ from torch.nn import Linear
 import pandas as pd
 from sentence_transformers import SentenceTransformer
 import json
+
+import google.generativeai as genai
 
 SECRET_KEY = "c67d75893e1466b33475deac05f91f606bcd1b2fbfa569acb4afdbbc1f6599dc"
 ALGORITHM = "HS256"
@@ -400,3 +402,14 @@ async def stats(request: statsRequest):
         courses_nodes[courses_nodes.course_code == request.code].to_json(orient='records'))[0]
     selected_rows["reviews"] = selected_rows["reviews"].split('\n')[:1]
     return selected_rows
+
+genai.configure(api_key="AIzaSyAYwK3xLs3CoOevA29JgDUuMCx_rGQQIgA")
+gemini_model = genai.GenerativeModel('gemini-pro')
+
+
+@app.post("/gemini")
+async def chat(request: geminiRequest):
+    response = gemini_model.generate_content(
+        f"Hello! 👋 I'm your friendly student course recommender. How can I assist you today with your course selection? Please provide me with some information, such as your interests, preferred subjects, or any specific requirements. I'm here to help! 😊\n\nUser Input: {request.input}"
+    )
+    return {"text": response.text}
