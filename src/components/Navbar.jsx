@@ -68,13 +68,13 @@ const Navbar = () => {
             {logged ? (
               <>
                 <a
-                  className="text-sm font-semibold leading-6 text-gray-200 mr-2 p-2 hover:bg-violet-500 rounded-md transition-all duration-500 ease-in-out border-2 border-white"
+                  className="text-sm font-semibold leading-6 text-gray-200 mr-2 p-2 hover:bg-gray-200 hover:text-indigo-900 rounded-md transition-all duration-500 ease-in-out border-2 border-white"
                   onClick={() => navigate("/preferences")}
                 >
                   PREFERENCES
                 </a>
                 <a
-                  className="text-sm font-semibold leading-6 text-gray-200 p-2 hover:bg-violet-500 rounded-md transition-all duration-500 ease-in-out border-2 border-violet-500"
+                  className="text-sm font-semibold leading-6 text-gray-200 mr-2 p-2 hover:bg-gray-200 hover:text-indigo-900 rounded-md transition-all duration-500 ease-in-out border-2 border-white"
                   onClick={handleLogOut}
                 >
                   Log Out <span aria-hidden="true">&rarr;</span>

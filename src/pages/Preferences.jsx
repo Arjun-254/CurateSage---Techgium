@@ -20,19 +20,19 @@ export default function PreferencesForm() {
   const navigate = useNavigate();
 
   const courseOptions = [
-    { value: "0. MATH 135", label: "MATH 135" },
-    { value: "1. ECON 101", label: "ECON 101" },
-    { value: "2. MATH 137", label: "MATH 137" },
-    { value: "3. CS 135", label: "CS 135" },
-    { value: "4. MATH 115", label: "MATH 115" },
-    { value: "5. MATH 136", label: "MATH 136" },
-    { value: "6. ENGL 109", label: "ENGL 109" },
-    { value: "7. STAT 230", label: "STAT 230" },
-    { value: "8. CHE 102", label: "CHE 102" },
-    { value: "9. PD 1", label: "PD 1" },
-    { value: "10. SPCOM 223", label: "SPCOM 223" },
-    { value: "11. MATH 239", label: "MATH 239" },
-    { value: "12. CS 136", label: "CS 136'" },
+    { value: "MATH 135", label: "MATH 135" },
+    { value: "ECON 101", label: "ECON 101" },
+    { value: "MATH 137", label: "MATH 137" },
+    { value: "CS 135", label: "CS 135" },
+    { value: "MATH 115", label: "MATH 115" },
+    { value: "MATH 136", label: "MATH 136" },
+    { value: "ENGL 109", label: "ENGL 109" },
+    { value: "STAT 230", label: "STAT 230" },
+    { value: "CHE 102", label: "CHE 102" },
+    { value: "PD 1", label: "PD 1" },
+    { value: "SPCOM 223", label: "SPCOM 223" },
+    { value: "MATH 239", label: "MATH 239" },
+    { value: "CS 136", label: "CS 136'" },
   ];
 
   useEffect(() => {
@@ -45,8 +45,9 @@ export default function PreferencesForm() {
           // If data is in local storage, use it
           const parsedData = JSON.parse(cachedData);
           setCourseList(parsedData.courses_list);
-          setStudiedCredits(parsedData.data.studied_credits);
-          setInterests(parsedData.data.interests);
+          console.log(parsedData);
+          setStudiedCredits(parsedData.studied_credits);
+          setInterests(parsedData.interests);
         } else {
           // If not in local storage, make API call
           const res = await axios.post(
@@ -64,6 +65,7 @@ export default function PreferencesForm() {
           setCourseList(res.data.courses_list);
           setStudiedCredits(res.data.studied_credits);
           setInterests(res.data.interests);
+          console.log(res.data);
           //   setWatchlist(res.data.WatchList);
           //   setRisk(res.data.Risk);
 
@@ -130,14 +132,14 @@ export default function PreferencesForm() {
   };
 
   return (
-    <div className="relative flex flex-col items-center justify-center w-full md:flex-row min-h-screen bg-gray-900 pb-6">
+    <div className="relative flex flex-col items-center justify-center w-full md:flex-row min-h-screen bg-gradient-to-r from-indigo-100 to-indigo-100 bg-full pb-6">
       <Navbar />
       <div className="overflow-hidden py-12 sm:py-18 w-full">
         <div className="mx-auto w-full px-10 lg:px-14">
           <div className="mx-auto grid max-w-2xl pt-16 grid-cols-1 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
             <div className="lg:p-12 lg:pt-4">
               <div className="m lg:max-w-lg justify-between text-center flex flex-col">
-                <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-2xl pt-10 pb-2">
+                <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-2xl pt-10 pb-2">
                   Select Your Courses
                 </h1>
                 <div className="">
@@ -155,7 +157,7 @@ export default function PreferencesForm() {
                   />
                 </div>
 
-                <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-2xl pt-10 pb-2">
+                <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-2xl pt-10 pb-2">
                   Enter your current studied credits
                 </h1>
                 <div className="">
@@ -167,7 +169,7 @@ export default function PreferencesForm() {
                   />
                 </div>
 
-                <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-2xl pt-10 pb-2">
+                <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-2xl pt-10 pb-2">
                   Enter your current interests
                 </h1>
                 <div className="">
@@ -178,7 +180,7 @@ export default function PreferencesForm() {
                     onChange={(e) => setInterests(e.target.value)}
                   />
                 </div>
-                {/* <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-2xl pt-10 pb-2">
+                {/* <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-2xl pt-10 pb-2">
                   Select Your Risk Tolerance
                 </h1>
                 <div className="">

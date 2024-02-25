@@ -52,8 +52,8 @@ const Threemodel = () => {
           enableZoom={false}
           maxPolarAngle={Math.PI / 3}
           minPolarAngle={Math.PI / 3}
-          // autoRotate
-          // autoRotateSpeed={1}
+          autoRotate
+          autoRotateSpeed={0.25}
         />
         <Computers isMobile={isMobile} />
       </Suspense>

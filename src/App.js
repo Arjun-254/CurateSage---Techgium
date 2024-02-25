@@ -4,9 +4,9 @@ import Navbar from "./components/Navbar";
 import SignUp from "./pages/SignUp";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
-// import Watchlist from "./pages/Watchlist";
 import Preferences from "./pages/Preferences";
 import { jwtDecode } from "jwt-decode";
+import Dashboard from "./pages/Dashboard";
 // import { Recommend } from "./pages/Recommend";
 
 const PrivateWrapper = ({ element }) => {
@@ -29,11 +29,11 @@ function App() {
             path="/preferences"
             element={<PrivateWrapper element={<Preferences />} />}
           />
-          {/*<Route
+          <Route
             path="/dashboard"
-            element={<PrivateWrapper element={<Watchlist />} />}
+            element={<PrivateWrapper element={<Dashboard />} />}
           />
-          
+          {/*
           <Route
             path="/Recommend"
             element={<PrivateWrapper element={<Recommend />} />}
