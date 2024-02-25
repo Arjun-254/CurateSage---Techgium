@@ -33,7 +33,7 @@ export default function News() {
           .split("T")[0];
 
         const response = await fetch(
-          `https://newsapi.org/v2/everything?q=Computer%20Science&from=${formattedLastMonthDate}&to=${formattedCurrentDate}&sortBy=publishedAt&language=en&apiKey=baea8a5de1a74cfc93627e7a4ca3a4d4`
+          `https://newsapi.org/v2/everything?q=UpGrad&from=${formattedLastMonthDate}&to=${formattedCurrentDate}&sortBy=publishedAt&language=en&apiKey=baea8a5de1a74cfc93627e7a4ca3a4d4`
         );
         const data = await response.json();
         console.log(data);

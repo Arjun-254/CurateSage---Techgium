@@ -18,7 +18,7 @@ export default function Stats() {
               Course Recommendations
             </dt>
             <dd class="order-first text-3xl tracking-tight text-gray-900 sm:text-5xl">
-              GNN
+              Graph Neural Network
             </dd>
           </div>
           <div class="mx-auto flex max-w-xs flex-col gap-y-4">
