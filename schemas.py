@@ -69,3 +69,7 @@ class StudentData(BaseModel):
 
 class RecommendationRequest(BaseModel):
     recs: str
+
+
+class statsRequest(BaseModel):
+    code: str

@@ -16,7 +16,7 @@ from deepface import DeepFace
 
 from pymongo import MongoClient
 
-from schemas import User, Login, Token, UserInDB, TokenData, StudentData, RecommendationRequest
+from schemas import User, Login, Token, UserInDB, TokenData, StudentData, RecommendationRequest, statsRequest
 
 import torch
 from torch_geometric.nn import SAGEConv, to_hetero
@@ -138,89 +138,6 @@ async def get_current_active_user(
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
 
-
-@app.get("/")
-def read_root():
-    print(db)
-    return {"You're not": "supposed to be here"}
-
-
-@app.post('/signup')
-def signup(request: User):
-    existing_user = db.find_one({"username": request.username})
-
-    if existing_user:
-        raise HTTPException(
-            status_code=400,
-            detail="Email ID has already registered",
-        )
-
-    hashed_pass = get_password_hash(request.password)
-    user_object = {
-        "first_name": request.first_name,
-        "last_name": request.last_name,
-        "username": request.username,
-        "id_student": abs(hash(request.username)) % 2**12,
-        "hashed_password": hashed_pass,
-        "age": request.age,
-        "gender": request.gender,
-        "courses_list": request.courses_list,
-        "highest_edu": request.highest_edu,
-        "studied_credits": request.studied_credits,
-        "disability": request.disability,
-        "final_result": request.final_result,
-        "region": request.region,
-        "imd_band": request.imd_band,
-        "interests": request.interests,
-        "first_login": request.first_login
-    }
-    db.insert_one(user_object)
-    return {"res": "User succesfully created"}
-
-
-@app.post('/login')
-def login(request: OAuth2PasswordRequestForm = Depends()):
-    user = db.find_one({"username": request.username})
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f'No user found with this Email ID')
-    if not verify_password(request.password, user["hashed_password"]):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f'Wrong Email ID or password')
-    access_token = create_access_token(data={"sub": user["username"]})
-    return {"access_token": access_token, "token_type": "bearer", "first_login": user["first_login"]}
-
-
-@app.post('/updatelists')
-async def updateLists(
-    courses_list: list[str] = Body(...),
-    studied_credits: float = Body(None),
-    interests: str = Body(None),
-    token: str = Header(...),
-):
-    current_user = await get_current_user(token)
-    filter = {"username": current_user.username}
-    newvalues = {
-        "$set": {
-            "courses_list": courses_list,
-            "studied_credits": studied_credits,
-            "interests": interests,
-            "first_login": False,
-        }
-    }
-    db.update_one(filter, newvalues)
-
-    return {"message": "Lists updated successfully"}
-
-
-@app.post('/getlists')
-async def getLists(
-    token: str = Header(...),
-):
-    current_user = await get_current_user(token)
-    return {"courses_list": current_user.courses_list, "studied_credits": current_user.studied_credits, 'interests': current_user.interests}
-
-
 MODEL_PATH = "best-sageconv.pt"
 graph_cluster = torch.load(MODEL_PATH)
 course_map = graph_cluster['course_map']
@@ -327,13 +244,96 @@ model.load_state_dict(graph_cluster['state_dict'])
 model.eval()
 
 
+@app.get("/")
+def read_root():
+    print(db)
+    return {"You're not": "supposed to be here"}
+
+
+@app.post('/signup')
+def signup(request: User):
+    existing_user = db.find_one({"username": request.username})
+
+    if existing_user:
+        raise HTTPException(
+            status_code=400,
+            detail="Email ID has already registered",
+        )
+
+    hashed_pass = get_password_hash(request.password)
+    user_object = {
+        "first_name": request.first_name,
+        "last_name": request.last_name,
+        "username": request.username,
+        "id_student": abs(hash(request.username)) % 2**12,
+        "hashed_password": hashed_pass,
+        "age": request.age,
+        "gender": request.gender,
+        "courses_list": request.courses_list,
+        "highest_edu": request.highest_edu,
+        "studied_credits": request.studied_credits,
+        "disability": request.disability,
+        "final_result": request.final_result,
+        "region": request.region,
+        "imd_band": request.imd_band,
+        "interests": request.interests,
+        "first_login": request.first_login
+    }
+    db.insert_one(user_object)
+    return {"res": "User succesfully created"}
+
+
+@app.post('/login')
+def login(request: OAuth2PasswordRequestForm = Depends()):
+    user = db.find_one({"username": request.username})
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f'No user found with this Email ID')
+    if not verify_password(request.password, user["hashed_password"]):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f'Wrong Email ID or password')
+    access_token = create_access_token(data={"sub": user["username"]})
+    return {"access_token": access_token, "token_type": "bearer", "first_login": user["first_login"]}
+
+
+@app.post('/updatelists')
+async def updateLists(
+    courses_list: list[str] = Body(...),
+    studied_credits: float = Body(None),
+    interests: str = Body(None),
+    token: str = Header(...),
+):
+    current_user = await get_current_user(token)
+    filter = {"username": current_user.username}
+    newvalues = {
+        "$set": {
+            "courses_list": courses_list,
+            "studied_credits": studied_credits,
+            "interests": interests,
+            "first_login": False,
+        }
+    }
+    db.update_one(filter, newvalues)
+
+    return {"message": "Lists updated successfully"}
+
+
+@app.post('/getlists')
+async def getLists(
+    token: str = Header(...),
+):
+    current_user = await get_current_user(token)
+    return {"courses_list": current_user.courses_list, "studied_credits": current_user.studied_credits, 'interests': current_user.interests}
+
+
 @app.post("/recommend/")
-async def rec(student_data: StudentData):
-    don = len(student_data.course_code)
+async def rec(token: str = Header(...)):
+    student_data = await get_current_user(token)
+    don = len(student_data.courses_list)
     df = {
-        "course_code": student_data.course_code,
+        "course_code": student_data.courses_list,
         "id_student": [student_data.id_student]*don,
-        "highest_education": [student_data.highest_education]*don,
+        "highest_education": [student_data.highest_edu]*don,
         "studied_credits": [student_data.studied_credits]*don,
         "disability": [student_data.disability]*don,
         "final_result": [student_data.final_result]*don,
@@ -366,7 +366,7 @@ async def rec(student_data: StudentData):
     test_data['course', 'prerequisite', 'course'].edge_index = data['course',
                                                                     'prerequisite', 'course'].edge_index
     already_seen_list = list()
-    for i in student_data.course_code:
+    for i in student_data.courses_list:
         already_seen_list.append(course_map[i])
     real_user = test_user_map[student_data.id_student]
     len_courses = len(test_data['course'].x)
@@ -377,19 +377,26 @@ async def rec(student_data: StudentData):
                  edge_label_index).clamp(min=-1, max=2)
     for i in already_seen_list:
         pred[i] = 0
-    idx_max = torch.topk(pred, student_data.num_courses).indices
+    idx_max = torch.topk(pred, 5).indices
     response = []
     for k, i in enumerate(idx_max):
-        response.append({
-            "course_title": courses_nodes.loc[int(i)]["course_title"],
-            "course_code": courses_nodes.loc[int(i)]["course_code"]
-        })
-    return response
+
+        # response.append({
+        #     "course_title": courses_nodes.loc[int(i)]["course_title"],
+        #     "course_code": courses_nodes.loc[int(i)]["course_code"],
+        #     "reviews": courses_nodes.loc[int(i)]["reviews"].split('\n')[:3],
+        #     "useful": courses_nodes.loc[int(i)]["useful"],
+        #     "easy": courses_nodes.loc[int(i)]["easy"],
+        #     "liked": courses_nodes.loc[int(i)]["liked"],
+        # })
+        response.append(courses_nodes.loc[int(i)]["course_code"])
+
+    return {"recommendations": response}
 
 
 @app.post("/stats/")
-async def stats(code: str):
+async def stats(request: statsRequest):
     selected_rows = json.loads(
-        courses_nodes[courses_nodes.course_code == code].to_json(orient='records'))[0]
-    selected_rows["reviews"] = selected_rows["reviews"].split('\n')[3:5]
+        courses_nodes[courses_nodes.course_code == request.code].to_json(orient='records'))[0]
+    selected_rows["reviews"] = selected_rows["reviews"].split('\n')[:1]
     return selected_rows
