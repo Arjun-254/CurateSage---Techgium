@@ -403,7 +403,7 @@ async def stats(request: statsRequest):
     selected_rows["reviews"] = selected_rows["reviews"].split('\n')[:1]
     return selected_rows
 
-genai.configure(api_key="AIzaSyAYwK3xLs3CoOevA29JgDUuMCx_rGQQIgA")
+genai.configure(api_key="Gemini Key Here")
 gemini_model = genai.GenerativeModel('gemini-pro')
 
 
