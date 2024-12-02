@@ -409,7 +409,8 @@ gemini_model = genai.GenerativeModel('gemini-pro')
 
 @app.post("/gemini")
 async def chat(request: geminiRequest):
+    
     response = gemini_model.generate_content(
-        f"Hello! 👋 I'm your friendly student course recommender. How can I assist you today with your course selection? Please provide me with some information, such as your interests, preferred subjects, or any specific requirements. I'm here to help! 😊\n\nUser Input: {request.input}"
+        f"Respond in max 128 words. Hello! 👋 I'm your friendly student course recommender. How can I assist you today with your course selection? Please provide me with some information, such as your interests, preferred subjects, or any specific requirements. I'm here to help! 😊\n\nUser Input: {request.input}"
     )
     return {"text": response.text}
